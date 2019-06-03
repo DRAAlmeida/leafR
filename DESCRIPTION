@@ -1,9 +1,11 @@
-Package: packageLAD
+Package: leafR
 Type: Package
 Title: Calculates the Leaf Area Index (LAD) and Other Related Functions
 Version: 0.1.0
 Authors@R: as.person(c(
-  "Danilo Roberti Alves de Almeida <daniloflorestas@gmail.com> [aut, cre]", 
+  "Danilo Roberti Alves de Almeida <daniloflorestas@gmail.com> [aut, cre]",
+  "Scott Christopher Stark <scottcstark@gmail.com> [aut]",
+  "Carlos Alberto Silva <carlos_engflorestal@outlook.com> [aut]",
   "Caio Hamamura <caiohamamura@gmail.com [aut]"
   ))
 Description: Provides a set of functions for analyzing the ecological structure of forests based on LAI and LAD measures derived from LiDAR data.
@@ -13,7 +15,7 @@ Imports:
   data.table,
   raster,
   lazyeval
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1

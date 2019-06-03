@@ -12,9 +12,9 @@
 #' ground points influence
 #' realtive low sampling
 #'
-#' @example
+#' @examples
 #' # Get the example laz file
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' VOXELS_LAD = lad.voxels(normlas.file,
 #'                         grain.size = 2, k=1)
@@ -35,6 +35,7 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
   names(t.binneds)[3] = paste("ground", names(t.binneds)[3], sep="_")
   names(t.binneds)[-(1:3)] = paste("pulses", names(t.binneds)[-(1:3)], sep="_")
   t.binneds = as.data.frame(t.binneds)
+
 
   #getting the coordinates X and Y
   #t.binneds$X = coordinates(t.binneds)[,1]
@@ -131,7 +132,7 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 #'
 #' @examples
 #' # Get the example laz file
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' # Calculate LAD from voxelization
 #' VOXELS_LAD = lad.voxels(normlas.file,
@@ -188,7 +189,7 @@ lad.profile = function(VOXELS_LAD, relative = F){
 #'
 #' @examples
 #' # Get the example laz file
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' # Calculate LAD from voxelization
 #' VOXELS_LAD = lad.voxels(normlas.file,
@@ -230,7 +231,7 @@ lai = function(lad_profile, min = 1, max = 100){
 #'
 #' @examples
 #' # Get the example laz file
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' # Calculate LAD from voxelization
 #' VOXELS_LAD = lad.voxels(normlas.file,
@@ -279,7 +280,7 @@ LAHV = function(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE){
 #'
 #' @examples
 #' # Get the example laz file
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' # Calculate LAD from voxelization
 #' # use thicker grain size to avoid voxels
@@ -351,8 +352,8 @@ lai.raster = function(VOXELS_LAD, min = 1, relative.value = NULL){
 #' @param lidar.lai the output from lai() function
 #' @param real.lai numeric, known real LAI
 #'
-#' @example
-#' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
+#' @examples
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 #'
 #' # Calculate LAD from voxelization
 #' VOXELS_LAD = lad.voxels(normlas.file,
@@ -372,6 +373,3 @@ k.coefficient = function(lidar.lai, real.lai = 6) {
   k.coefficient = lidar.lai/real.lai
   return(k.coefficient)
 }
-
-
-
