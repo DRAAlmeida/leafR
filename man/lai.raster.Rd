@@ -21,14 +21,37 @@ Produce a raster map of LAI. The resolution of the raster depends of grain.size 
 normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
 
 # Calculate LAD from voxelization
+# use thicker grain size to avoid voxels
+# without returns
 VOXELS_LAD.5 = lad.voxels(normlas.file,
+                        grain.size = 5, k=1)
 
 #Map using absolute values
 lai_raster = lai.raster(VOXELS_LAD.5)
-x11();plot(lai_raster)
+\donttest{
+x11()
+plot(lai_raster)
+}
 
-#map using relative values (\%)
+#############################
+## RELATIVE LAI Raster
+######################
+# Calculate voxels LAD with finer grain size for
+# better estimation of LAI
+VOXELS_LAD = lad.voxels(normlas.file,
+                        grain.size = 2)
+
+# Calculate the LAD profile
+lad_profile = lad.profile(VOXELS_LAD)
+
+#Calculate LAI derived from LAD profile
+lidar.lai = lai(lad_profile)
+
+#Map using relative values (\%)
 relative.lai_raster = lai.raster(VOXELS_LAD.5, relative.value = lidar.lai)
-x11();plot(relative.lai_raster)
+\donttest{
+x11()
+plot(relative.lai_raster)
+}
 
 }

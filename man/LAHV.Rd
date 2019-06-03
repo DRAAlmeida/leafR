@@ -27,9 +27,9 @@ VOXELS_LAD = lad.voxels(normlas.file,
 # Calculate the LAD profile
 lad_profile = lad.profile(VOXELS_LAD)
 
-LAHV(lad_profile, LAI.weighting = F, height.weighting = F)
-LAHV(lad_profile, LAI.weighting = T, height.weighting = F)
-LAHV(lad_profile, LAI.weighting = F, height.weighting = T)
-LAHV(lad_profile, LAI.weighting = T, height.weighting = T)
+LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE)
+LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = FALSE)
+LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = TRUE)
+LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = TRUE)
 
 }

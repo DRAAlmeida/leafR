@@ -17,21 +17,19 @@
 #' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
 #'
 #' VOXELS_LAD = lad.voxels(normlas.file,
-#'                         grain.size = 2)
+#'                         grain.size = 2, k=1)
 #'
 #' @export
 lad.voxels = function(normlas.file, grain.size = 1, k=1){
 
   #empty list object that will be fueling with binneds data.frames
   LAD_VOXELS = list()
-
-  #define dummy variables to avoid warnings from package check
-  Z = values = t.las = NA
+  Z = NA
 
   #load normalized las cloud
   .las = lidR::readLAS(normlas.file)
 
-  t.binneds2 = lidR::grid_metrics3d(.las, length(Z), res = c(grain.size, 1))
+  t.binneds2 = lidR::grid_metrics3d(.las, fun=lazyeval::f_capture(length(Z)), res = c(grain.size, 1))
   t.binneds = data.table::dcast(t.binneds2, X + Y ~ Z, value.var="V1")
   t.binneds[is.na(t.binneds)] = 0
   names(t.binneds)[3] = paste("ground", names(t.binneds)[3], sep="_")
@@ -112,9 +110,6 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
   rm(LAD.dz1, t.binneds)
 
   return(LAD_VOXELS)
-
-  rm(t.las)
-
 }#End function
 
 ################################################################
@@ -146,8 +141,8 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 #' plot(lad_profile$height ~ lad_profile$lad, type = "l", ylim = c(0, 40),
 #'      ylab = "Canopy height (m)", xlab = "LAD (m2/m3)")
 #'
-#' #relative LAD PROFILE
-#' relative.lad_profile = lad.profile(VOXELS_LAD, relative = T)
+#' # relative LAD PROFILE
+#' relative.lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
 #'
 #' plot(relative.lad_profile$height ~ relative.lad_profile$lad, type = "l", ylim = c(0, 40),
 #'      ylab = "Canopy height (m)", xlab = "LAD (% of LAI)")
@@ -156,10 +151,10 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 lad.profile = function(VOXELS_LAD, relative = F){
 
   if(relative == T){
-    t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = T)
+    t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = TRUE)
     t.lad.profile = t.lad.profile/sum(t.lad.profile)*100
   }else{
-  t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = T)
+  t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = TRUE)
   }
 
   max_height = ncol(VOXELS_LAD[[1]]) + .5
@@ -205,6 +200,9 @@ lad.profile = function(VOXELS_LAD, relative = F){
 #' lidar.lai = lai(lad_profile); lidar.lai
 #' understory.lai = lai(lad_profile, min = 1, max = 5); understory.lai
 #'
+#' # relative LAD PROFILE
+#' relative.lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
+#'
 #' #understory relative LAI (% of total LAI)
 #' relative.understory.lai = lai(relative.lad_profile, min = 1, max = 5); relative.understory.lai
 #'
@@ -241,23 +239,23 @@ lai = function(lad_profile, min = 1, max = 100){
 #' # Calculate the LAD profile
 #' lad_profile = lad.profile(VOXELS_LAD)
 #'
-#' LAHV(lad_profile, LAI.weighting = F, height.weighting = F)
-#' LAHV(lad_profile, LAI.weighting = T, height.weighting = F)
-#' LAHV(lad_profile, LAI.weighting = F, height.weighting = T)
-#' LAHV(lad_profile, LAI.weighting = T, height.weighting = T)
+#' LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE)
+#' LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = FALSE)
+#' LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = TRUE)
+#' LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = TRUE)
 #'
 #' @export
 LAHV = function(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE){
 
   #LAI.weighting
-  if(LAI.weighting == T){
+  if(LAI.weighting){
     LAHV = sum(lad_profile$height*lad_profile$lad)/sum(lad_profile$lad)
   }else{
     LAHV = sum(lad_profile$height*lad_profile$lad)
   } #end if else
 
   #height.weighting
-  if(height.weighting == T){
+  if(height.weighting){
     LAHV = LAHV/max(lad_profile$height)
     } #enf if
 
@@ -284,16 +282,38 @@ LAHV = function(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE){
 #' normlas.file = system.file("extdata", "lidar_example.laz", package="packageLAD")
 #'
 #' # Calculate LAD from voxelization
+#' # use thicker grain size to avoid voxels
+#' # without returns
 #' VOXELS_LAD.5 = lad.voxels(normlas.file,
-#                         grain.size = 5, k=1)
+#'                         grain.size = 5, k=1)
 #'
 #' #Map using absolute values
 #' lai_raster = lai.raster(VOXELS_LAD.5)
-#' x11();plot(lai_raster)
+#' \donttest{
+#' x11()
+#' plot(lai_raster)
+#' }
 #'
-#' #map using relative values (%)
+#' #############################
+#' ## RELATIVE LAI Raster
+#' ######################
+#' # Calculate voxels LAD with finer grain size for
+#' # better estimation of LAI
+#' VOXELS_LAD = lad.voxels(normlas.file,
+#'                         grain.size = 2)
+#'
+#' # Calculate the LAD profile
+#' lad_profile = lad.profile(VOXELS_LAD)
+#'
+#' #Calculate LAI derived from LAD profile
+#' lidar.lai = lai(lad_profile)
+#'
+#' #Map using relative values (%)
 #' relative.lai_raster = lai.raster(VOXELS_LAD.5, relative.value = lidar.lai)
-#' x11();plot(relative.lai_raster)
+#' \donttest{
+#' x11()
+#' plot(relative.lai_raster)
+#' }
 #'
 #' @export
 # The use of min and max arguments allowed the estimation of the LAI for different vertical strata
@@ -303,10 +323,10 @@ lai.raster = function(VOXELS_LAD, min = 1, relative.value = NULL){
 
   if(is.null(relative.value)){
     points = data.frame(x = VOXELS_LAD$coordenates$X, y = VOXELS_LAD$coordenates$Y,
-                        z = apply(VOXELS_LAD$LAD[,min:max], 1, sum, na.rm = T))
+                        z = apply(VOXELS_LAD$LAD[,min:max], 1, sum, na.rm = TRUE))
   }else{
     points = data.frame(x = VOXELS_LAD$coordenates$X, y = VOXELS_LAD$coordenates$Y,
-                        z = apply(VOXELS_LAD$LAD[,min:max], 1, sum, na.rm = T)/relative.value*100)
+                        z = apply(VOXELS_LAD$LAD[,min:max], 1, sum, na.rm = TRUE)/relative.value*100)
 
   }
 

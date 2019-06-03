@@ -33,6 +33,9 @@ lad_profile = lad.profile(VOXELS_LAD)
 lidar.lai = lai(lad_profile); lidar.lai
 understory.lai = lai(lad_profile, min = 1, max = 5); understory.lai
 
+# relative LAD PROFILE
+relative.lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
+
 #understory relative LAI (\% of total LAI)
 relative.understory.lai = lai(relative.lad_profile, min = 1, max = 5); relative.understory.lai
 
