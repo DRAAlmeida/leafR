@@ -16,3 +16,20 @@ k.coefficient(lidar.lai, real.lai = 6)
 Calculate k coefficient provided a known real LAI and the
 calculated LAI
 }
+\examples{
+normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
+
+# Calculate LAD from voxelization
+VOXELS_LAD = lad.voxels(normlas.file,
+                        grain.size = 2)
+
+# Calculate the LAD profile
+lad_profile = lad.profile(VOXELS_LAD)
+
+# Calculate LAI derived from LAD profile
+lidar.lai = lai(lad_profile); lidar.lai
+
+# The real LAI was measured in the field work for validation
+k.coefficient(lidar.lai,  real.lai = 6)
+
+}

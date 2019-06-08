@@ -14,7 +14,8 @@ LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE)
 \item{height.weighting}{boolean, define if LAVH should be weighted by the max height. default FALSE}
 }
 \description{
-LAVH can be weighted by total LAI or max.height
+Calculates the leaf area height volume (LAHV) metric
+as described in Almeida et al. (2019).
 }
 \examples{
 # Get the example laz file
@@ -32,4 +33,7 @@ LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = FALSE)
 LAHV(lad_profile, LAI.weighting = FALSE, height.weighting = TRUE)
 LAHV(lad_profile, LAI.weighting = TRUE, height.weighting = TRUE)
 
+}
+\references{
+Almeida, D. R. A., Stark, S. C., Chazdon, R., Nelson, B. W., Cesar, R. G., Meli, P., … Brancalion, P. H. S. (2019). The effectiveness of lidar remote sensing for monitoring forest cover attributes and landscape restoration. Forest Ecology and Management, 438, 34–43. <https://doi.org/10.1016/J.FORECO.2019.02.002>
 }

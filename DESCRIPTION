@@ -1,21 +1,26 @@
 Package: leafR
 Type: Package
 Title: Calculates the Leaf Area Index (LAD) and Other Related Functions
-Version: 0.1.0
+Version: 0.1.3
 Authors@R: as.person(c(
-  "Danilo Roberti Alves de Almeida <daniloflorestas@gmail.com> [aut, cre]",
-  "Scott Christopher Stark <scottcstark@gmail.com> [aut]",
-  "Carlos Alberto Silva <carlos_engflorestal@outlook.com> [aut]",
-  "Caio Hamamura <caiohamamura@gmail.com [aut]"
+  "Danilo Roberti Alves de Almeida <daniloflorestas@gmail.com> [aut, cre] (<https://orcid.org/0000-0002-8747-0085>)",
+  "Scott Christopher Stark <scottcstark@gmail.com> [aut] (<https://orcid.org/0000-0002-1305-1793>)",
+  "Carlos Alberto Silva <carlos_engflorestal@outlook.com> [aut] (<https://orcid.org/0000-0002-7844-3560>)",
+  "Caio Hamamura <caiohamamura@gmail.com [aut] (<https://orcid.org/0000-0001-6149-5885>)"
   ))
-Description: Provides a set of functions for analyzing the ecological structure of forests based on LAI and LAD measures derived from LiDAR data.
+Description: A set of functions for analyzing the structure 
+  of forests based on the leaf area density (LAD) and leaf area index (LAI) measures 
+  calculated from Airborne Laser Scanning (ALS), i.e., scanning lidar (Light Detection 
+  and Ranging) data. The methodology is discussed and described in 
+  Almeida et al. (2019) <doi:10.3390/rs11010092> and 
+  Stark et al. (2012) <doi:10.1111/j.1461-0248.2012.01864.x>.
 Imports:
   lidR,
   sp,
   data.table,
   raster,
   lazyeval
-License: GPL-3 + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
