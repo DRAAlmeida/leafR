@@ -155,7 +155,7 @@ lad.profile = function(VOXELS_LAD, relative = F){
     t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = TRUE)
     t.lad.profile = t.lad.profile/sum(t.lad.profile)*100
   }else{
-  t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = TRUE)
+    t.lad.profile = apply(VOXELS_LAD$LAD, 2, mean, na.rm = TRUE)
   }
 
   max_height = ncol(VOXELS_LAD[[1]]) + .5
@@ -209,8 +209,8 @@ lad.profile = function(VOXELS_LAD, relative = F){
 #'
 #' @export
 lai = function(lad_profile, min = 1, max = 100){
-    lai = sum(lad_profile$lad[(min):(max)], na.rm = T)
-    return(lai)
+  lai = sum(lad_profile$lad[(min):(max)], na.rm = T)
+  return(lai)
 }
 
 
@@ -262,14 +262,158 @@ LAHV = function(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE){
   #height.weighting
   if(height.weighting){
     LAHV = LAHV/max(lad_profile$height)
-    } #enf if
+  } #enf if
 
   return(LAHV)
 
 } #end function
 
 
+################################################################
+################################################################
+#' Foliage Height Diversity
+#'
+#' @description Calculates the foliage height diversity (FHD) metric
+#' from abundances considered as per-voxel relative LAD values, as described in MacArthur and MacArthur (1961).
+#'
+#' @param lad_profile a data.frame including values of relative LAD at height intervals, output of the lad.profile function (use relative = TRUE)
+#' @param evenness boolean, defines whether FHD should be based on Shannon's diversity or evenness (Hill 1973).
+#' The default FALSE calculates Shannon diversity as the original FHD by MacArthur and MacArthur (1961);
+#' the alternative TRUE was recommended by Valbuena et al. (2012), and it calculates Shannon evenness dividing it by the natural logarithm of the number of number of voxels with LAD values above the threshold.
+#' @param LAD.threshold numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in FHD calculation. Defaults to the inverse of the total number of voxels.
+#'
+#'
+#' @references
+#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. https://doi.org/10.2307%2F1934352
+#' MacArthur R.H., MacArthur J.W. (1961). On bird species diversity. Ecology 42: 594–598. http://dx.doi.org/10.2307/1932254
+#' Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
+#'
+#' @examples
+#' # Get the example laz file
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
+#'
+#' # Calculate LAD from voxelization
+#' VOXELS_LAD = lad.voxels(normlas.file,
+#'                         grain.size = 2)
+#'
+#' # Calculate the LAD profile
+#' lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
+#'
+#' FHD(lad_profile, evenness = FALSE)
+#' FHD(lad_profile, evenness = TRUE)
+#'
+#' @export
+FHD = function(lad_profile, evenness = FALSE, LAD.threshold = -1){
 
+  # applying threshold
+  if(LAD.threshold == -1) LAD.threshold <- 1 / length(lad_profile$height)
+  lad_profile <- lad_profile[lad_profile$lad >= LAD.threshold,]
+
+  lad_profile$lad <- lad_profile$lad / 100
+
+  #calculating FHD
+  if(evenness){
+    FHD = - sum( lad_profile$lad * log(lad_profile$lad) ) / log( length(lad_profile$height) )
+  }else{
+    FHD = - sum( lad_profile$lad * log(lad_profile$lad) )
+  } #end if else
+
+  return(FHD)
+
+} #end function
+
+
+################################################################
+################################################################
+#' Gini-Simpson index of foliage structural diversity
+#'
+#' @description Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity ($\1 - gamma$))
+#' from abundances considered as per-voxel relative LAD values.
+#'
+#' @param lad_profile a data.frame including values of relative LAD at height intervals, output of the lad.profile function (use relative = TRUE)
+#' @param evenness boolean, defines whether GS should be based on Simpson's diversity or evenness (Hill 1973).
+#' The default FALSE calculates Simpson's diversity ($\gamma$);
+#' the alternative TRUE was recommended by Valbuena et al. (2012), and it divides by the number of voxels with LAD values above the threshold, following Smith and Wilson (1996).
+#' @param LAD.threshold numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in GS calculation. Defaults to the inverse of the total number of voxels.
+#'
+#'
+#' @references
+#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. https://doi.org/10.2307%2F1934352
+#' Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. http://dx.doi.org/10.2307/3545749
+#' Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
+#'
+#' @examples
+#' # Get the example laz file
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
+#'
+#' # Calculate LAD from voxelization
+#' VOXELS_LAD = lad.voxels(normlas.file,
+#'                         grain.size = 2)
+#'
+#' # Calculate the LAD profile
+#' lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
+#'
+#' GS(lad_profile, evenness = FALSE)
+#' GS(lad_profile, evenness = TRUE)
+#'
+#' @export
+GS = function(lad_profile, evenness = FALSE, LAD.threshold = -1){
+
+  # applying threshold
+  if(LAD.threshold == -1) LAD.threshold <- 1 / length(lad_profile$height)
+  lad_profile <- lad_profile[lad_profile$lad >= LAD.threshold,]
+
+  lad_profile$lad <- lad_profile$lad / 100
+
+  #calculating FHD
+  if(evenness){
+    GS = ( 1 - sum( lad_profile$lad^2 ) ) / ( 1 - ( 1 / length(lad_profile$height) ) )
+  }else{
+    GS = 1 - sum( lad_profile$lad^2 )
+  } #end if else
+
+  return(GS)
+
+} #end function
+
+
+################################################################
+################################################################
+#' Gini coefficient of foliage structural diversity
+#'
+#' @description Calculates the Gini coefficient (GC) from individual LIDAR returns (i.e. without voxelization),
+#' as described for the L-coefficient of variation (equivalent to Gini) in Valbuena et al. (2017).
+#'
+#' @param normlas.file normalized las file
+#' @param threshold numerical, defines the minimum height considered to represent an echo from leaves.
+#'
+#' @note Valbuena et al. (2012) argues on why Gini is better suited to describe structural complexity the Foliage Height Diversity or the Gini-Simpon index.
+#'
+#' @references
+#' Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
+#' Valbuena R., Maltamo M., Mehtätalo L., Packalen P. (2017) Key structural features of Boreal forests may be detected directly using L-moments from airborne lidar data. Remote Sensing of Environment. 194: 437–446. https://doi.org/10.1016/j.rse.2016.10.024
+#'
+#' @examples
+#' # Get the example laz file
+#' normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
+#'
+#' GC(normlas.file, threshold =1)
+#'
+#' @export
+GC = function(normlas.file, threshold = 1){
+
+  #load heights from normalized las cloud
+  lidar = lidR::readLAS(normlas.file, select = "z", filter = paste("-drop_z_below", threshold) )
+
+  # calculate Gini
+  n <- length(lidar@data$Z)
+  x <- sort(lidar@data$Z)
+  G <- 2 * sum(x * 1L:n)/sum(x) - (n + 1L)
+  GC <- G/(n - 1L)
+
+  return(GC)
+
+} #end function
 
 
 
