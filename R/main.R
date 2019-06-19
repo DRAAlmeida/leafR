@@ -1,3 +1,30 @@
+myMetrics = function(Z, maxZ){
+  heightSlices = floor(Z) # Round down
+  zSlice = data.table::data.table(Z=Z, heightSlices=heightSlices) # Create a data.table (Z, slices)
+  sliceCount = zSlice[, length(Z), by = .(heightSlices)] # Count number of returns by slice
+
+  ##############################################
+  # Add columns to equalize number of columns
+  ##############################################
+  colRange = 0:maxZ
+  addToList = colRange[!(colRange %in% sliceCount$heightSlices)]
+  bindDt = data.frame(heightSlices = addToList, V1=0)
+  sliceCount = rbind(sliceCount, bindDt)
+
+  sliceCount = sliceCount[order(sliceCount$heightSlices)] # Order by height
+
+  colNames = as.character(sliceCount$heightSlices)
+  colNames[1] = "ground_0_1m"
+  colNames[-1] = paste0("pulses_", colNames[-1], "_", sliceCount$heightSlices[-1]+1, "m")
+  metrics = list()
+  metrics[colNames] = sliceCount$V1
+
+  return(metrics)
+
+} #end function myMetrics
+
+
+
 ######################################################################################
 ######################################################################################
 ######################################################################################
@@ -28,13 +55,15 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 
   #load normalized las cloud
   .las = lidR::readLAS(normlas.file)
-
-  t.binneds2 = lidR::grid_metrics3d(.las, fun=lazyeval::f_capture(length(Z)), res = c(grain.size, 1))
-  t.binneds = data.table::dcast(t.binneds2, X + Y ~ Z, value.var="V1")
-  t.binneds[is.na(t.binneds)] = 0
-  names(t.binneds)[3] = paste("ground", names(t.binneds)[3], sep="_")
-  names(t.binneds)[-(1:3)] = paste("pulses", names(t.binneds)[-(1:3)], sep="_")
-  t.binneds = as.data.frame(t.binneds)
+  
+  .las@data$Z[.las@data$Z < 0] = 0 
+  
+  maxZ = floor(max(.las@data$Z))
+  lazyFunc = formula(paste0("~myMetrics(Z, ", maxZ, ")"))
+  t.binneds = lidR::grid_metrics(.las, lazyFunc, res = grain.size,
+                                 start = c(min(.las@data$X), max(.las@data$Y)))
+  t.binneds = data.frame(sp::coordinates(t.binneds), raster::values(t.binneds))
+  names(t.binneds)[1:2] = c("X", "Y")
 
 
   #getting the coordinates X and Y
@@ -138,7 +167,7 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 #' VOXELS_LAD = lad.voxels(normlas.file,
 #'                         grain.size = 2)
 #'
-#' lad_profile = lad.profile(VOXELS_LAD)
+lad_profile = lad.profile(VOXELS_LAD)
 #' plot(lad_profile$height ~ lad_profile$lad, type = "l", ylim = c(0, 40),
 #'      ylab = "Canopy height (m)", xlab = "LAD (m2/m3)")
 #'
