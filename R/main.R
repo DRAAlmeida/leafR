@@ -1,17 +1,26 @@
-myMetrics = function(Z, maxZ){
-  heightSlices = floor(Z) # Round down
-  zSlice = data.table::data.table(Z=Z, heightSlices=heightSlices) # Create a data.table (Z, slices)
-  sliceCount = zSlice[, length(Z), by = .(heightSlices)] # Count number of returns by slice
+#' Count number of points in each Z slice
+#'
+#' @param Z numeric vector. The heights vector.
+#' @param maxZ numeric. The maximum height expected in the whole dataset.
+#'
+#' @export
+pointsByZSlice = function(Z, maxZ){
+  heightSlices = as.integer(Z) # Round down
+  zSlice = data.table::data.table(Z=Z, heightSlices=heightSlices) # Create a data.table (Z, slices))
+  sliceCount = stats::aggregate(list(V1=Z), list(heightSlices=heightSlices), length) # Count number of returns by slice
 
   ##############################################
   # Add columns to equalize number of columns
   ##############################################
   colRange = 0:maxZ
-  addToList = colRange[!(colRange %in% sliceCount$heightSlices)]
-  bindDt = data.frame(heightSlices = addToList, V1=0)
-  sliceCount = rbind(sliceCount, bindDt)
-
-  sliceCount = sliceCount[order(sliceCount$heightSlices)] # Order by height
+  addToList = setdiff(colRange, sliceCount$heightSlices)
+  n = length(addToList)
+  if (n > 0) {
+    bindDt = data.frame(heightSlices = addToList, V1=integer(n))
+    sliceCount = rbind(sliceCount, bindDt)
+    # Order by height
+    sliceCount = sliceCount[order(sliceCount$heightSlices),]
+  }
 
   colNames = as.character(sliceCount$heightSlices)
   colNames[1] = "ground_0_1m"
@@ -21,9 +30,7 @@ myMetrics = function(Z, maxZ){
 
   return(metrics)
 
-} #end function myMetrics
-
-
+} #end function pointsByZSlice
 
 ######################################################################################
 ######################################################################################
@@ -46,8 +53,9 @@ myMetrics = function(Z, maxZ){
 #' VOXELS_LAD = lad.voxels(normlas.file,
 #'                         grain.size = 2, k=1)
 #'
+#' @importFrom stats formula
 #' @export
-lad.voxels = function(normlas.file, grain.size = 1, k=1){
+lad.voxels = function(normlas.file, grain.size = 1, k = 1){
 
   #empty list object that will be fueling with binneds data.frames
   LAD_VOXELS = list()
@@ -55,14 +63,15 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 
   #load normalized las cloud
   .las = lidR::readLAS(normlas.file)
-  
-  .las@data$Z[.las@data$Z < 0] = 0 
-  
+
+  .las@data$Z[.las@data$Z < 0] = 0
+
   maxZ = floor(max(.las@data$Z))
-  lazyFunc = formula(paste0("~myMetrics(Z, ", maxZ, ")"))
-  t.binneds = lidR::grid_metrics(.las, lazyFunc, res = grain.size,
+
+  func = formula(paste0("~pointsByZSlice(Z, ", maxZ, ")"))
+  t.binneds    = lidR::grid_metrics(.las, func, res = grain.size,
                                  start = c(min(.las@data$X), max(.las@data$Y)))
-  t.binneds = data.frame(sp::coordinates(t.binneds), raster::values(t.binneds))
+  t.binneds    = data.frame(sp::coordinates(t.binneds), raster::values(t.binneds))
   names(t.binneds)[1:2] = c("X", "Y")
 
 
@@ -167,9 +176,9 @@ lad.voxels = function(normlas.file, grain.size = 1, k=1){
 #' VOXELS_LAD = lad.voxels(normlas.file,
 #'                         grain.size = 2)
 #'
-lad_profile = lad.profile(VOXELS_LAD)
-#' plot(lad_profile$height ~ lad_profile$lad, type = "l", ylim = c(0, 40),
-#'      ylab = "Canopy height (m)", xlab = "LAD (m2/m3)")
+#' lad_profile = lad.profile(VOXELS_LAD)
+# plot(lad_profile$height ~ lad_profile$lad, type = "l", ylim = c(0, 40),
+#      ylab = "Canopy height (m)", xlab = "LAD (m2/m3)")
 #'
 #' # relative LAD PROFILE
 #' relative.lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)

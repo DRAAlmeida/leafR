@@ -19,6 +19,7 @@ Imports:
   sp,
   data.table,
   raster,
+  stats,
   lazyeval
 License: GPL-3
 Encoding: UTF-8
