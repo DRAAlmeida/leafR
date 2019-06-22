@@ -23,6 +23,8 @@ VOXELS_LAD = lad.voxels(normlas.file,
                         grain.size = 2)
 
 lad_profile = lad.profile(VOXELS_LAD)
+plot(lad_profile$height ~ lad_profile$lad, type = "l", ylim = c(0, 40),
+     ylab = "Canopy height (m)", xlab = "LAD (m2/m3)")
 
 # relative LAD PROFILE
 relative.lad_profile = lad.profile(VOXELS_LAD, relative = TRUE)
