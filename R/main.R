@@ -327,12 +327,12 @@ FHD = function(lad_profile, evenness = FALSE, LAD.threshold = -1){
 ################################################################
 #' Gini-Simpson index of foliage structural diversity
 #'
-#' @description Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity ($\1 - gamma$))
+#' @description Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity (\eqn{1 - \gamma})
 #' from abundances considered as per-voxel relative LAD values.
 #'
 #' @param lad_profile a data.frame including values of relative LAD at height intervals, output of the lad.profile function (use relative = TRUE)
 #' @param evenness boolean, defines whether GS should be based on Simpson's diversity or evenness (Hill 1973).
-#' The default FALSE calculates Simpson's diversity ($\gamma$);
+#' The default FALSE calculates Simpson's diversity (\eqn{\gamma});
 #' the alternative TRUE was recommended by Valbuena et al. (2012), and it divides by the number of voxels with LAD values above the threshold, following Smith and Wilson (1996).
 #' @param LAD.threshold numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in GS calculation. Defaults to the inverse of the total number of voxels.
 #'
