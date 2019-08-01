@@ -9,12 +9,15 @@ FHD(lad_profile, evenness = FALSE, LAD.threshold = -1)
 \arguments{
 \item{lad_profile}{a data.frame including values of relative LAD at height intervals, output of the lad.profile function (use relative = TRUE)}
 
-\item{evenness}{boolean, defines whether FHD should be based on Shannon's diversity or evenness (Hill 1973). The default FALSE calculates Shannon diversity as the original FHD by MacArthur and MacArthur (1961); the alternative TRUE was recommended by Valbuena et al. (2012), and it calculates Shannon evenness dividing it by the natural logarithm of the number of number of voxels with LAD values above the threshold.}
+\item{evenness}{boolean, defines whether FHD should be based on Shannon's diversity or evenness (Hill 1973).
+The default FALSE calculates Shannon diversity as the original FHD by MacArthur and MacArthur (1961);
+the alternative TRUE was recommended by Valbuena et al. (2012), and it calculates Shannon evenness dividing it by the natural logarithm of the number of number of voxels with LAD values above the threshold.}
 
 \item{LAD.threshold}{numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in FHD calculation. Defaults to the inverse of the total number of voxels.}
 }
 \description{
-Calculates the foliage height diversity (FHD) metric from abundances considered as per-voxel relative LAD values, as described in MacArthur and MacArthur (1961).
+Calculates the foliage height diversity (FHD) metric
+from abundances considered as per-voxel relative LAD values, as described in MacArthur and MacArthur (1961).
 }
 \examples{
 # Get the example laz file
@@ -32,7 +35,7 @@ FHD(lad_profile, evenness = TRUE)
 
 }
 \references{
-Hill, M. O. (1973). Diversity and evenness: a unifying notation and its consequences. Ecology, 54, 427–432. <http://dx.doi.org/10.2307/1934352>
-MacArthur, R.H., MacArthur J.W. (1961). On bird species diversity. Ecology, 42, 594–598. <http://dx.doi.org/10.2307/1932254>
-Valbuena, R., Packalen, P., Martín-Fernández, S., Maltamo, M. (2012)/ Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management, 276, 185–195. <http://dx.doi.org/10.1016/j.foreco.2012.03.036>
+Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. https://doi.org/10.2307%2F1934352
+MacArthur R.H., MacArthur J.W. (1961). On bird species diversity. Ecology 42: 594–598. http://dx.doi.org/10.2307/1932254
+Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
 }

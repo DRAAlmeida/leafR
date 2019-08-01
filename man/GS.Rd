@@ -9,12 +9,15 @@ GS(lad_profile, evenness = FALSE, LAD.threshold = -1)
 \arguments{
 \item{lad_profile}{a data.frame including values of relative LAD at height intervals, output of the lad.profile function (use relative = TRUE)}
 
-\item{evenness}{boolean, boolean, defines whether GS should be based on Simpson's diversity or evenness (Hill 1973). The default FALSE calculates Simpson's diversity ($\gamma$); the alternative TRUE was recommended by Valbuena et al. (2012), and it divides by the number of voxels with LAD values above the threshold, following Smith and Wilson (1996).}
+\item{evenness}{boolean, defines whether GS should be based on Simpson's diversity or evenness (Hill 1973).
+The default FALSE calculates Simpson's diversity (\eqn{\gamma});
+the alternative TRUE was recommended by Valbuena et al. (2012), and it divides by the number of voxels with LAD values above the threshold, following Smith and Wilson (1996).}
 
 \item{LAD.threshold}{numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in GS calculation. Defaults to the inverse of the total number of voxels.}
 }
 \description{
-Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity ($\1 - gamma$)) from abundances considered as per-voxel relative LAD values.
+Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity (\eqn{1 - \gamma})
+from abundances considered as per-voxel relative LAD values.
 }
 \examples{
 # Get the example laz file
@@ -32,7 +35,7 @@ GS(lad_profile, evenness = TRUE)
 
 }
 \references{
-Hill, M. O. (1973). Diversity and evenness: a unifying notation and its consequences. Ecology, 54, 427–432. <http://dx.doi.org/10.2307/1934352>
-Smith, B., and Wilson, J.B. (1996). A consumer's guide to evenness indices, Oikos, 76, 70–82. <http://dx.doi.org/10.2307/3545749>
-Valbuena, R., Packalen, P., Martín-Fernández, S., Maltamo, M. (2012)/ Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management, 276, 185–195. <http://dx.doi.org/10.1016/j.foreco.2012.03.036>
+Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. https://doi.org/10.2307%2F1934352
+Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. http://dx.doi.org/10.2307/3545749
+Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
 }
