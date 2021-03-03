@@ -28,7 +28,7 @@ VOXELS_LAD.5 = lad.voxels(normlas.file,
 
 #Map using absolute values
 lai_raster = lai.raster(VOXELS_LAD.5)
-\donttest{
+\dontrun{
 x11()
 plot(lai_raster)
 }
@@ -49,7 +49,7 @@ lidar.lai = lai(lad_profile)
 
 #Map using relative values (\%)
 relative.lai_raster = lai.raster(VOXELS_LAD.5, relative.value = lidar.lai)
-\donttest{
+\dontrun{
 x11()
 plot(relative.lai_raster)
 }

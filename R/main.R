@@ -3,6 +3,8 @@
 #' @param Z numeric vector. The heights vector.
 #' @param maxZ numeric. The maximum height expected in the whole dataset.
 #'
+#' @importFrom data.table data.table
+#' @importFrom stats aggregate
 #' @export
 pointsByZSlice = function(Z, maxZ){
   heightSlices = as.integer(Z) # Round down
@@ -53,6 +55,9 @@ pointsByZSlice = function(Z, maxZ){
 #' VOXELS_LAD = lad.voxels(normlas.file,
 #'                         grain.size = 2, k=1)
 #'
+#' @importFrom raster values
+#' @importFrom lidR grid_metrics readLAS
+#' @importFrom sp coordinates
 #' @importFrom stats formula
 #' @export
 lad.voxels = function(normlas.file, grain.size = 1, k = 1){
@@ -476,7 +481,7 @@ GC = function(normlas.file, threshold = 1){
 #'
 #' #Map using absolute values
 #' lai_raster = lai.raster(VOXELS_LAD.5)
-#' \donttest{
+#' \dontrun{
 #' x11()
 #' plot(lai_raster)
 #' }
@@ -497,11 +502,13 @@ GC = function(normlas.file, threshold = 1){
 #'
 #' #Map using relative values (%)
 #' relative.lai_raster = lai.raster(VOXELS_LAD.5, relative.value = lidar.lai)
-#' \donttest{
+#' \dontrun{
 #' x11()
 #' plot(relative.lai_raster)
 #' }
 #'
+#' @importFrom raster raster
+#' @importFrom sp gridded
 #' @export
 # The use of min and max arguments allowed the estimation of the LAI for different vertical strata
 lai.raster = function(VOXELS_LAD, min = 1, relative.value = NULL){
