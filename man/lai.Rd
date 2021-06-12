@@ -13,6 +13,9 @@ lai(lad_profile, min = 1, max = 100)
 
 \item{max}{max canopy height}
 }
+\value{
+A \code{\link[base:numeric]{numeric}} containing the LAI calculated from the Leaf Area Density
+}
 \description{
 calculates the lead area index (LAI)
 }

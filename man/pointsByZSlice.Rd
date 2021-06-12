@@ -11,6 +11,9 @@ pointsByZSlice(Z, maxZ)
 
 \item{maxZ}{numeric. The maximum height expected in the whole dataset.}
 }
+\value{
+A \code{\link[base:list]{list}} of point counts in each Z slice of 1 meter
+}
 \description{
 Count number of points in each Z slice
 }

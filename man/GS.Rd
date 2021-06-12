@@ -15,6 +15,9 @@ the alternative TRUE was recommended by Valbuena et al. (2012), and it divides b
 
 \item{LAD.threshold}{numerical (0,1), defines the minimum value of LAD for considering the relative leaf abundance of a voxel in GS calculation. Defaults to the inverse of the total number of voxels.}
 }
+\value{
+A \code{\link[base:numeric]{numeric}} containing the Fini-Simpson index calculated from the Leaf Area Density profile
+}
 \description{
 Calculates the Gini-Simpson (GS) index metric (i.e. complement of Simpson diversity (\eqn{1 - \gamma})
 from abundances considered as per-voxel relative LAD values.
@@ -35,7 +38,7 @@ GS(lad_profile, evenness = TRUE)
 
 }
 \references{
-Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. https://doi.org/10.2307%2F1934352
-Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. http://dx.doi.org/10.2307/3545749
-Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. http://dx.doi.org/10.1016/j.foreco.2012.03.036
+Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. \doi{10.2307\%2F1934352}
+Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. \doi{10.2307/3545749}
+Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. \doi{10.1016/j.foreco.2012.03.036}
 }

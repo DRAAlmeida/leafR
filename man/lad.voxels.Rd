@@ -14,6 +14,9 @@ lad.voxels(normlas.file, grain.size = 1, k = 1)
 
 \item{k}{coefficient to transform effective LAI to real LAI (k = 1; for effective LAI)}
 }
+\value{
+A \code{\link[base:data.frame]{data.frame}} of the 3D voxels information (xyz) with Leaf Area Density values
+}
 \description{
 Creates a data frame of the 3D voxels information (xyz)
 with Leaf Area Density values from las file

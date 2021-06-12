@@ -12,6 +12,9 @@ k.coefficient(lidar.lai, real.lai = 6)
 
 \item{real.lai}{numeric, known real LAI}
 }
+\value{
+A \code{\link[base:numeric]{numeric}} with the calculate value for k coefficient for calibrating the real LAI from calculated LAI.
+}
 \description{
 Calculate k coefficient provided a known real LAI and the
 calculated LAI

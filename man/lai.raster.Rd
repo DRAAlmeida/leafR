@@ -11,12 +11,15 @@ lai.raster(VOXELS_LAD, min = 1, relative.value = NULL)
 
 \item{min}{mix canopy height}
 
-\item{relative.value}{LAI map can be made in percentage of a relative lai value (indicate for effective LAI)}
+\item{relative.value}{LAI map can be made in percentage of a relative lai value (indicate for effective LAI)
+
+A Leaf Area Index (LAI) \code{\link[raster:Raster-classes]{RasterLayer}} produced from the LAD voxels output from \code{\link[=lad.voxels]{lad.voxels()}} function.}
 }
 \description{
 Produce a raster map of LAI. The resolution of the raster depends of grain.size choosed on lad.voxel() funtion.
 }
 \examples{
+library(raster)
 # Get the example laz file
 normlas.file = system.file("extdata", "lidar_example.laz", package="leafR")
 
@@ -28,10 +31,7 @@ VOXELS_LAD.5 = lad.voxels(normlas.file,
 
 #Map using absolute values
 lai_raster = lai.raster(VOXELS_LAD.5)
-\dontrun{
-x11()
 plot(lai_raster)
-}
 
 #############################
 ## RELATIVE LAI Raster
@@ -49,9 +49,6 @@ lidar.lai = lai(lad_profile)
 
 #Map using relative values (\%)
 relative.lai_raster = lai.raster(VOXELS_LAD.5, relative.value = lidar.lai)
-\dontrun{
-x11()
 plot(relative.lai_raster)
-}
 
 }

@@ -4,12 +4,15 @@
 \alias{lad.profile}
 \title{This function calculate the lad profile from the input lad.voxels}
 \usage{
-lad.profile(VOXELS_LAD, relative = F)
+lad.profile(VOXELS_LAD, relative = FALSE)
 }
 \arguments{
 \item{VOXELS_LAD}{3D grid of LAD values (output of lad.voxels() function)}
 
 \item{relative}{produce lad profile by relative total LAI values. Indicate when usinh effective LAI}
+}
+\value{
+A \code{\link[base:data.frame]{data.frame}} with the calculated Leaf Area Density
 }
 \description{
 This function calculate the lad profile from the input lad.voxels
