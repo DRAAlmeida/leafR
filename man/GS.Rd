@@ -38,7 +38,9 @@ GS(lad_profile, evenness = TRUE)
 
 }
 \references{
-Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. \doi{10.2307\%2F1934352}
+Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. doi: \href{https://doi.org/10.2307\%2F1934352}{10.2307\\\%2F1934352}
+
 Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. \doi{10.2307/3545749}
+
 Valbuena R., Packalen P., Martín-Fernández S., Maltamo M. (2012) Diversity and equitability ordering profiles applied to the study of forest structure. Forest Ecology and Management 276: 185–195. \doi{10.1016/j.foreco.2012.03.036}
 }
