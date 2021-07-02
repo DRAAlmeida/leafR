@@ -1,3 +1,10 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# leafR 0.3.5 (2021-07-01)
+
+* Fix: Hill (1973) doi replace space with /
+
+
 ### 0.3.2
  - Remove lazyeval dependency
  - Documented the return value of the functions
