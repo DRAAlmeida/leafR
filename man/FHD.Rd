@@ -38,7 +38,7 @@ FHD(lad_profile, evenness = TRUE)
 
 }
 \references{
-Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. doi: \href{https://doi.org/10.2307\%2F1934352}{10.2307\\\%2F1934352}
+Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. \doi{10.2307/1934352}
 
 MacArthur R.H., MacArthur J.W. (1961). On bird species diversity. Ecology 42: 594–598. \doi{10.2307/1932254}
 

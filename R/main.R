@@ -338,7 +338,7 @@ LAHV = function(lad_profile, LAI.weighting = FALSE, height.weighting = FALSE){
 #' @return A [`numeric`][base::numeric] containing the Foliage Height Diversity calculated from the Leaf Area Density profile
 #'
 #' @references
-#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. doi: \href{https://doi.org/10.2307%2F1934352}{10.2307\\%2F1934352}
+#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. \doi{10.2307/1934352}
 #'
 #' MacArthur R.H., MacArthur J.W. (1961). On bird species diversity. Ecology 42: 594–598. \doi{10.2307/1932254}
 #'
@@ -395,7 +395,7 @@ FHD = function(lad_profile, evenness = FALSE, LAD.threshold = -1){
 #' @return A [`numeric`][base::numeric] containing the Fini-Simpson index calculated from the Leaf Area Density profile
 #'
 #' @references
-#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. doi: \href{https://doi.org/10.2307%2F1934352}{10.2307\\%2F1934352}
+#' Hill M. O. (1973) Diversity and evenness: a unifying notation and its consequences. Ecology. 54: 427–432. \doi{10.2307/1934352}
 #'
 #' Smith B., and Wilson J.B. (1996). A consumer's guide to evenness indices. Oikos 76: 70–82. \doi{10.2307/3545749}
 #'
